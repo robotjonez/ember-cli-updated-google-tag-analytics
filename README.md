@@ -1,4 +1,4 @@
-# ember-cli-google-analytics
+# ember-cli-updated-google-tag-analytics
 
 Plugin for ember-cli that injects Google Analytics tracking code into HTML content.
 
@@ -9,7 +9,7 @@ Plugin for ember-cli that injects Google Analytics tracking code into HTML conte
 To install simply run:
 
 ```
-npm install --save-dev ember-cli-google-analytics
+npm install --save-dev ember-cli-updated-google-tag-analytics
 ```
 
 ## Warning: Content Security Policy
@@ -20,54 +20,30 @@ A future version of this plugin is planned to add the tracking code as an additi
 
 ## Usage
 
-Once configured, the Google Analytics tracking code will be injected into your index.html file. A mixin is provided for simple page view tracking inside of your Ember application. To use it, include it inside your `app/router.js` file:
+Once configured, the Google Analytics tracking code will be injected into your index.html file. All you have to do is setup your Google tagmanager Enviroment 
 
-```
-import Ember from 'ember';
-import config from './config/environment';
-import googlePageview from './mixins/google-pageview';
-
-var Router = Ember.Router.extend(googlePageview, {
-  location: config.locationType
-});
-
-Router.map(function() {
-  ...
-});
-
-export default Router;
-```
 
 ## Configuration
 
 This plugin uses the Ember CLI project's configuration as defined in `config/environment.js`.
 
-The tracking code will appear only if `ENV.googleAnalytics.webPropertyId` is defined. For instance, to enable the tracking code in only the production environment:
+The tracking code will appear only if `ENV.googleAnalytics.webPropertyId` and `ENV.googleAnalytics.tagPropertyId` is defined. For instance, to enable the tracking code in only the production environment:
 
 ```javascript
 if (environment === 'production') {
-  ENV.googleAnalytics = {
-    webPropertyId: 'UA-XXXX-Y'
-  };
+  googleAnalytics: {
+    webPropertyId: 'UA-xxxxxxxx-x',
+    tagPropertyId: 'GTM-xxxxxxx',
+  }
 }
 ```
 
 ### Configuration Parameters
 
-**ga.js and analytics.js**
+**gtag.js and analytics.js**
 
 * `webPropertyId` (Default: `null`): the Web Property ID for the Google Web Property you wish to track.
-* `tracker` (Default: `analytics.js`): The Google Tracker to use, can be either `analytics.js` or `ga.js`.
-* `globalVariable` (Default: `ga`): the global variable to use for the Google Analytics tracker object. This is ignored when the `tracker` is `ga.js`.
-* `displayFeatures` (Default: `false`): enables [Display Advertising](https://support.google.com/analytics/answer/3450482) tracking code.
-
-**analytics.js only**
-
-* `cookieDomain` (Default: `null`): the domain to set the tracking cookies on. Can be a `null`, the domain to use for cookies, or 'none'.
-* `cookieName` (Default: `null`): the name of the cookie to set and use.
-* `cookieExpires` (Default: `null`): the expiration, in seconds, of the cookie.
-
-If none of the cookie settings are set (they are left nullish) then `'auto'` will be used for the cookie settings. Otherwise the JSON of only the settings set will be passed to the `ga()` function.
+* `tagPropertyId` (Default: `null`): The Google Tracker for Google Tag Managment.
 
 ## Running Tests
 
