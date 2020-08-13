@@ -1,75 +1,55 @@
 'use strict';
 
-var merge = require('lodash-node/compat/objects/merge');
-var googleAnalyticsConfigDefaults = {
+let merge = require('lodash-node/compat/objects/merge');
+let googleAnalyticsConfigDefaults = {
   globalVariable: 'ga',
-  tracker: 'analytics.js',
+  tracker: 'ga.js',
   webPropertyId: null,
+  tagPropertyId: null,
   cookieDomain: null,
   cookieName: null,
   cookieExpires: null,
   displayFeatures: false
 };
 
-function analyticsTrackingCode(config) {
-  var scriptArray,
-      displayFeaturesString,
-      gaConfig = {};
 
-  if (config.cookieDomain != null) {
-    gaConfig.cookieDomain = config.cookieDomain;
-  }
-  if (config.cookieName != null) {
-    gaConfig.cookieName = config.cookieName;
-  }
-  if (config.cookieExpires != null) {
-    gaConfig.cookieExpires = config.cookieExpires;
-  }
-  if (Object.keys(gaConfig).length === 0) {
-    gaConfig = "'auto'";
-  } else {
-    gaConfig = JSON.stringify(gaConfig);
-  }
+function gaTrackingCode(config) {
+  let scriptArray;
 
   scriptArray = [
+
+    "<script async src='https://www.googletagmanager.com/gtag/js?id='" + config.webPropertyId + "''>",
+
+    "</script>",
+
     "<script>",
-    "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){",
-    "(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),",
-    "m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)",
-    "})(window,document,'script','https://www.google-analytics.com/analytics.js','" + config.globalVariable + "');",
-    "",
-    "" + config.globalVariable + "('create', '" + config.webPropertyId + "', " + gaConfig + ");",
+    "window.dataLayer = window.dataLayer || [];",
+    "function gtag(){dataLayer.push(arguments);}",
+    "gtag('js', new Date());",
+    "gtag('config', '" + config.webPropertyId + "');",
+    "</script>",
+
+    "<script>",
+    "(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':",
+    "new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],",
+    "j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=",
+    "'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);",
+    "})(window,document,'script','dataLayer','" + config.tagPropertyId + "');",
     "</script>"
   ];
-
-  if (config.displayFeatures) {
-    displayFeaturesString = "" + config.globalVariable + "('require', 'displayfeatures');";
-    scriptArray.splice(-2, 0, displayFeaturesString);
-  }
 
   return scriptArray;
 }
 
-function gaTrackingCode(config) {
-  var scriptArray;
+function gaTrackingBodyCode(config) {
+  let scriptArray;
 
   scriptArray = [
-    "<script>",
-    "var _gaq = _gaq || [];",
-    "_gaq.push(['_setAccount', '" + config.webPropertyId + "']);",
-    "_gaq.push(['_trackPageview']);",
-    "",
-    "(function() {",
-    "  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;",
-    "  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';",
-    "  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);",
-    "})();",
-    "</script>"
+    "<noscript>",
+    "<iframe src='https://www.googletagmanager.com/ns.html?id='" + config.tagPropertyId + "'' height='0' width='0' style='display:none;visibility:hidden'>",
+    "</iframe>",
+    "</noscript>"
   ];
-
-  if (config.displayFeatures) {
-    scriptArray.splice(-4, 1, "  ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';");
-  }
 
   return scriptArray;
 }
@@ -77,18 +57,20 @@ function gaTrackingCode(config) {
 module.exports = {
   name: 'ember-cli-google-analytics',
   contentFor: function(type, config) {
-    var googleAnalyticsConfig = merge({}, googleAnalyticsConfigDefaults, config.googleAnalytics || {});
+    let googleAnalyticsConfig = merge({}, googleAnalyticsConfigDefaults, config.googleAnalytics || {});
 
     if (type === 'head' && googleAnalyticsConfig.webPropertyId != null) {
-      var content;
+      let content;
 
-      if (googleAnalyticsConfig.tracker === 'analytics.js') {
-        content = analyticsTrackingCode(googleAnalyticsConfig);
-      } else if (googleAnalyticsConfig.tracker === 'ga.js') {
-        content = gaTrackingCode(googleAnalyticsConfig);
-      } else {
-        throw new Error('Invalid tracker found in configuration: "' + googleAnalyticsConfig.tracker + '". Must be one of: "analytics.js", "ga.js"');
-      }
+      content = gaTrackingCode(googleAnalyticsConfig);
+
+      return content.join("\n");
+    }
+
+    if (type === 'body' && googleAnalyticsConfig.webPropertyId != null) {
+      let content;
+
+      content = gaTrackingBodyCode(googleAnalyticsConfig);
 
       return content.join("\n");
     }
