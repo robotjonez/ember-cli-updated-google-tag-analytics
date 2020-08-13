@@ -20,7 +20,7 @@ A future version of this plugin is planned to add the tracking code as an additi
 
 ## Usage
 
-Once configured, the Google Analytics tracking code will be injected into your index.html file. All you have to do is setup your Google tagmanager Enviroment 
+Once configured, the Google Analytics tracking code will be injected into your index.html file. All you have to do is setup your Google tagmanager Enviroment: https://tagmanager.google.com/
 
 
 ## Configuration
