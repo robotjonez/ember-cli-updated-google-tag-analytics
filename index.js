@@ -5,6 +5,7 @@ let googleAnalyticsConfigDefaults = {
   globalVariable: 'ga',
   tracker: 'ga.js',
   webPropertyId: null,
+  accountPropertyId: null,
   tagPropertyId: null,
   cookieDomain: null,
   cookieName: null,
@@ -17,9 +18,8 @@ function gaTrackingCode(config) {
   let scriptArray;
 
   scriptArray = [
-
-    "<script async src='https://www.googletagmanager.com/gtag/js?id='" + config.webPropertyId + "''>",
-
+      
+    "<script async src='https://www.googletagmanager.com/gtag/js?id=" + config.webPropertyId + "''>",
     "</script>",
 
     "<script>",
@@ -46,7 +46,7 @@ function gaTrackingBodyCode(config) {
 
   scriptArray = [
     "<noscript>",
-    "<iframe src='https://www.googletagmanager.com/ns.html?id='" + config.tagPropertyId + "'' height='0' width='0' style='display:none;visibility:hidden'>",
+    "<iframe src='https://www.googletagmanager.com/ns.html?id=" + config.tagPropertyId + "' height='0' width='0' style='display:none;visibility:hidden'>",
     "</iframe>",
     "</noscript>"
   ];
@@ -55,7 +55,7 @@ function gaTrackingBodyCode(config) {
 }
 
 module.exports = {
-  name: 'ember-cli-google-analytics',
+  name: 'ember-cli-updated-google-tag-analytics',
   contentFor: function(type, config) {
     let googleAnalyticsConfig = merge({}, googleAnalyticsConfigDefaults, config.googleAnalytics || {});
 
