@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-updated-google-tag-analytics",
-  "version": "2.0.0",
+  "version": "2.1.",
   "description": "Newest Ember CLI addon that adds the Google Analytics tracking code",
   "directories": {
     "test": "tests"
