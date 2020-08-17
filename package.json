@@ -1,9 +1,8 @@
 {
-  "name": "ember-cli-google-analytics",
-  "version": "1.5.0",
-  "description": "Ember CLI addon that adds the Google Analytics tracking code",
+  "name": "ember-cli-updated-google-tag-analytics",
+  "version": "2.0.0",
+  "description": "Newest Ember CLI addon that adds the Google Analytics tracking code",
   "directories": {
-    "doc": "doc",
     "test": "tests"
   },
   "scripts": {
@@ -13,16 +12,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/pgrippi/ember-cli-google-analytics.git"
+    "url": "git://github.com/robotjonez/ember-cli-updated-google-tag-analytics.git"
   },
   "bugs": {
-    "url": "https://github.com/pgrippi/ember-cli-google-analytics/issues"
+    "url": "https://github.com/robotjonez/ember-cli-updated-google-tag-analytics/issues"
   },
-  "homepage": "https://github.com/pgrippi/ember-cli-google-analytics",
+  "homepage": "https://github.com/robotjonez/ember-cli-updated-google-tag-analytics",
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "Peter Grippi",
+  "author": "Curtis Jones",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.0.0",
@@ -54,5 +53,6 @@
   },
   "dependencies": {
     "lodash-node": "^2.4.1"
-  }
+  },
+  "main": "index.js"
 }
